@@ -23,8 +23,6 @@ public class CascadiaImg implements Screen {
     Skin skin;
     Viewport vp;
     public Stage stage;
-    private Game game;
-    private GameScreen gameScreen;
     private Storage storage;
     private TextButton spin;
     private Image[][] elements = new Image[5][5];
@@ -35,8 +33,6 @@ public class CascadiaImg implements Screen {
     private Texture aTex, bTex, cTex, dTex;
 
     public CascadiaImg(Viewport viewport, Game game, GameScreen gameScreen) {
-        this.gameScreen = gameScreen;
-        this.game = game;
         stage = new Stage(viewport);
         vp = viewport;
         Gdx.input.setInputProcessor(stage);
@@ -82,11 +78,11 @@ public class CascadiaImg implements Screen {
     private void startSpinningImage(final Image image) {
         image.addAction(Actions.repeat(20, Actions.sequence(
             Actions.run(() -> image.setDrawable(new TextureRegionDrawable(getRandomTexture()))),
-            Actions.delay(0.05f) // Delay of 50 milliseconds
+            Actions.delay(0.05f)
         )));
 
         image.addAction(Actions.sequence(
-            Actions.delay(0.1f), // Wait 2 seconds
+            Actions.delay(0.1f),
             Actions.run(() -> image.setDrawable(new TextureRegionDrawable(getRandomTexture())))
         ));
     }
@@ -108,15 +104,14 @@ public class CascadiaImg implements Screen {
         spin.setPosition(vp.getWorldWidth() / 1.2f, vp.getWorldHeight() / 32f);
         stage.addActor(spin);
 
-        // Create score label
         scoreLabel = new Label("Score: 0", storage.labelStyle);
         scoreLabel.setPosition(vp.getWorldWidth() / 1.5f, vp.getWorldHeight() / 13f);
         stage.addActor(scoreLabel);
     }
 
     private void spinElements() {
-        float elementSpacingX = 110f;
-        float elementSpacingY = 110f;
+        float spaceX = 110f;
+        float spaceY = 110f;
         elX = vp.getWorldWidth() / 10f;
         elY = vp.getWorldHeight() - 100;
 
@@ -124,8 +119,8 @@ public class CascadiaImg implements Screen {
             for (int j = 0; j < 5; j++) {
                 Texture texture = getRandomTexture();
                 elements[i][j] = new Image(texture);
-                float xPos = elX + j * elementSpacingX;
-                float yPos = elY - i * elementSpacingY;
+                float xPos = elX + j * spaceX;
+                float yPos = elY - i * spaceY;
                 elements[i][j].setPosition(xPos, yPos);
                 elements[i][j].setSize(100, 100);
                 stage.addActor(elements[i][j]);
